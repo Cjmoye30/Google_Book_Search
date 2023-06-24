@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 const secret = 'mysecretsshhhhh';
 const expiration = '2h';
 
+
+// TODO: Update to work with GraphQL API
 module.exports = {
   // function for our authenticated routes
   authMiddleware: function (req, res, next) {
