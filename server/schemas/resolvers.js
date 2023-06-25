@@ -19,7 +19,7 @@ Query: {
 
 Mutation: {
     // create a user, sign a token, and send back
-    createUser: async(parent, {body}) => {
+    addUser: async(parent, {body}) => {
         const user = await User.create(body);
 
         if (!user) {
