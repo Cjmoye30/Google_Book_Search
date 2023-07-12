@@ -26,7 +26,7 @@ type Auth {
 }
 
 type Query {
-    user: User
+    me: User
 }
 
 input saveBookInput {
@@ -37,6 +37,8 @@ input saveBookInput {
     link: String
 }
 
+# mutations are modifying the data on the server
+# all of the fields defined are the available operations for modifying data on the server
 type Mutation {
     login(username: String!, email: String!, password: String!): Auth
     addUser(username: String!, email: String!, password: String!): Auth

@@ -1,8 +1,8 @@
-// Resolvers define how the server should respond to GraphQL queries and mutations defind in the typeDefs
-
-// Requiring the models we are going to be using
-const { Query } = require('mongoose');
 const {User} = require('../models');
+
+const resolvers = {
+
+
 
 Query: {
     // get single user by either their ID or username
@@ -15,7 +15,7 @@ Query: {
           }
           res.json(foundUser);
     }
-}
+},
 
 Mutation: {
     // create a user, sign a token, and send back
@@ -28,7 +28,7 @@ Mutation: {
         const token = signToken(user);
         res.json({ token, user });
 
-    }
+    },
     
     // login a user, sign a token, and send back
     login: async(parent, {body}) => {
@@ -44,7 +44,7 @@ Mutation: {
         }
         const token = signToken(user);
         res.json({ token, user });
-    }
+    },
     
     // save book
     saveBook: async(parent, {user, body}) => {
@@ -61,7 +61,7 @@ Mutation: {
           return res.status(400).json(err);
         }
 
-    }
+    },
     
     // delete book
     deleteBook: async(parent, {user, params}) => {
@@ -76,4 +76,5 @@ Mutation: {
           return res.json(updatedUser);
     }
 
+}
 }

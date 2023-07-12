@@ -12,6 +12,14 @@ import Auth from '../utils/auth';
 import { saveBook, searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 
+// import the mutation React Hook to be able to use the modified data
+import { useMutation } from '@apollo/client'
+import { SAVE_BOOK } from '../utils/mutations';
+
+// setup our mutation - passing in the mutation we would like to use - which is SAVE_BOOK
+const [saveBook, { error }] = useMutation(SAVE_BOOK)
+
+
 const SearchBooks = () => {
   // create state for holding returned google api data
   const [searchedBooks, setSearchedBooks] = useState([]);
@@ -71,8 +79,13 @@ const SearchBooks = () => {
       return false;
     }
 
+    // Replacing saveBook with the new mutation
     try {
-      const response = await saveBook(bookToSave, token);
+      // const response = await saveBook(bookToSave, token);
+      // not sure what to put for the variables on this one
+      const response = await saveBook({
+        variables: {...criteria}
+      })
 
       if (!response.ok) {
         throw new Error('something went wrong!');
