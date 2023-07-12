@@ -12,7 +12,8 @@ type User {
 }
 
 type Book {
-    bookId: String
+    _ID: ID!
+    bookId: String!
     authors: [Authors!]
     description: String!
     title: String!
@@ -40,7 +41,7 @@ input saveBookInput {
 # mutations are modifying the data on the server
 # all of the fields defined are the available operations for modifying data on the server
 type Mutation {
-    login(username: String!, email: String!, password: String!): Auth
+    login(email: String!, password: String!): Auth
     addUser(username: String!, email: String!, password: String!): Auth
     saveBook(criteria: saveBookInput): User
     deleteBook(bookId: String!): Auth
