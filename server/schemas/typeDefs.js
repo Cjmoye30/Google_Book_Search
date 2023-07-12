@@ -12,7 +12,6 @@ type User {
 }
 
 type Book {
-    _ID: ID!
     bookId: String!
     authors: [String!]
     description: String!
@@ -31,6 +30,7 @@ type Query {
 }
 
 input saveBookInput {
+    bookId: String!
     authors: [String!]
     description: String!
     title: String!
