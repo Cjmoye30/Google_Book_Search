@@ -3,6 +3,8 @@ const express = require('express');
 const path = require('path');
 const db = require('./config/connection');
 const routes = require('./routes');
+const cors = require('cors');
+
 
 // Require Apollo Server and typeDefs/Resolvers to be used
 const { ApolloServer } = require('apollo-server-express')
@@ -26,6 +28,12 @@ app.use(routes);
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../client/build')));
 }
+
+
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+});
+
 
 // applying apollo server as middleware to the express app
 const startApolloServer = async () => {

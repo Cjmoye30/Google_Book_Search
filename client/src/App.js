@@ -1,18 +1,16 @@
 import React from 'react';
-
-// importing the necessary items for the Apollo Client
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SearchBooks from './pages/SearchBooks';
 import SavedBooks from './pages/SavedBooks';
 import Navbar from './components/Navbar';
 
-// starting up a new apollo client which connects to the graphQL endpoint
-// we are also implementing a cache to be used
 const client = new ApolloClient({
   uri: '/graphql',
   cache: new InMemoryCache(),
+  headers: {
+    authorization: localStorage.getItem('id_token')
+  }
 });
 
 function App() {

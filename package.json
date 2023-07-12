@@ -13,7 +13,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "apollo-server-express": "^3.12.0",
     "concurrently": "^5.1.0"
   }
 }
