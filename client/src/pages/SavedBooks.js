@@ -14,24 +14,16 @@ import { GET_ME } from '../utils/queries';
 import { REMOVE_BOOK } from '../utils/mutations';
 
 const SavedBooks = () => {
-
-  // use this to determine if `useEffect()` hook needs to run again
-  // do i need this?
   const userDataLength = Object.keys(userData).length;
-
-  // GET_ME query
   const { loading, data } = useQuery(GET_ME);
   console.log(data?.getMe)
   const userData = data?.getMe;
-
   // REMOVE Book
-  const [removeBook, { error }] = useMutation(REMOVE_BOOK);
+  const [removeBook] = useMutation(REMOVE_BOOK);
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
-
-    
 
     if (!token) {
       return false;
@@ -40,12 +32,9 @@ const SavedBooks = () => {
     try {
 
       // const response = await deleteBook(bookId, token);
-      const {data} = await removeBook({variables: bookId});
+      const {data} = await removeBook({bookId: bookId});
       console.log({data});
 
-      if (!data) {
-        throw new Error('something went wrong!');
-      }
       removeBookId(bookId);
     } catch (err) {
       console.error(err);

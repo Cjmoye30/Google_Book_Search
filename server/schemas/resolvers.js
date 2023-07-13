@@ -1,78 +1,78 @@
 const { AuthenticationError } = require('apollo-server-express');
 const { User } = require('../models');
-const {signToken} = require('../utils/auth')
+const { signToken } = require('../utils/auth');
 
 const resolvers = {
   Query: {
     // get single user by either their ID or username
     me: async (parent, args, context) => {
-        const user = User.findOne({_id: context._id});
-        console.log(user)
-        return user;
+      const user = User.findOne({ _id: context._id });
+      console.log(user)
+      return user;
     }
   },
 
   Mutation: {
     // create a user, sign a token, and send back
     addUser: async (parent, { username, email, password }) => {
-
-      try {
-        console.log(username, eamil, password)
         const user = await User.create({ username, email, password });
-        console.log(user)
-
+        console.log(user);
         const token = signToken(user);
-        res.json({ token, user });
+        console.log(token)
+        return { token, user }
 
-      } catch (err) {
-        console.log("ERROR FROM RESOLVER", err)
-      }
     },
 
     // login a user, sign a token, and send back
     login: async (parent, { email, password }) => {
-      const user = findOne({email});
+      const user = findOne({ email });
       console.log(user)
 
-      if(!user) {
+      if (!user) {
         throw AuthenticationError("Could not find that email bro")
       }
 
       const token = signToken(user)
       console.log(token);
-      return {token, user}
+      return { token, user }
     },
 
     // save book
-    saveBook: async (parent, { user, body }) => {
-      console.log(user);
+    saveBook: async (parent, args, context) => {
       try {
-        const updatedUser = await User.findOneAndUpdate(
-          { _id: user._id },
-          { $addToSet: { savedBooks: body } },
-          { new: true, runValidators: true }
-        );
-        return res.json(updatedUser);
-      } catch (err) {
-        console.log(err);
-        return res.status(400).json(err);
+        const newBook = findOneAndUpdate(
+          { _id: context._id },
+          // this criteria is what we defined in the typeDefs and we are using dot notation to access it
+          { $addToSet: { savedBooks: args.criteria } },
+          // return the new verision of the user which shows that the book is svaed
+          { new: true }
+        )
+        console.log(newBook)
+        return newBook
       }
-
+      catch (err) {
+        console.log("Error saving the book!")
+      }
     },
 
     // delete book
-    deleteBook: async (parent, { user, params }) => {
-      const updatedUser = await User.findOneAndUpdate(
-        { _id: user._id },
-        { $pull: { savedBooks: { bookId: params.bookId } } },
-        { new: true }
-      );
-      if (!updatedUser) {
-        return res.status(404).json({ message: "Couldn't find user with this id!" });
-      }
-      return res.json(updatedUser);
-    }
+    deleteBook: async (parent, bookId, context) => {
 
+      try {
+        const deletedBook = User.findOneAndUpdate(
+          {_id: context._id},
+          {$pull: {savedBooks: bookId}},
+          {new: true}
+          
+        )
+        console.log(deletedBook)
+        return deletedBook;
+
+      } catch (err) {
+        console.log("Error removing the book!")
+
+      }
+    }
   }
 }
 

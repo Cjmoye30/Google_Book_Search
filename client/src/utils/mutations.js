@@ -1,12 +1,11 @@
 import { gql } from '@apollo/client';
 
 export const LOGIN_USER = gql`
-    mutation login($username: String!, $email: String!, $password: String!) {
-        login(username: $username, email: $email, password: $password) {
+    mutation login($email: String!, $password: String!) {
+        login(email: $email, password: $password) {
             _id
             username
             email
-            password
         }
     }
 
@@ -15,10 +14,21 @@ export const LOGIN_USER = gql`
 export const ADD_USER = gql`
     mutation addUser($username: String!, $email: String!, $password: String!) {
         addUser(username: $username, email: $email, password: $password) {
-            _id
-            username
-            email
-            password
+            token
+            user {
+                _id
+                username
+                email
+                bookCount
+                savedBooks {
+                    authors
+                    bookId
+                    image
+                    link
+                    title
+                    description
+                }
+            }
         }
     }
 `;
@@ -26,12 +36,17 @@ export const ADD_USER = gql`
 export const SAVE_BOOK = gql`
     mutation saveBook($criteria: saveBookInput!) {
         saveBook(criteria: $criteria) {
-            _id
-            authors
-            description
-            title
-            image
-            link
+            username
+            email
+            bookCount
+            savedBooks {
+                authors
+                description
+                bookId
+                image
+                link
+                title
+            }
         }
     }
 `;
@@ -39,7 +54,17 @@ export const SAVE_BOOK = gql`
 export const REMOVE_BOOK = gql`
     mutation deleteBook($bookId: String) {
         deleteBook(bookId: $bookId) {
-            _id
+            username
+            email
+            bookCount
+            savedBooks {
+                authors
+                description
+                bookId
+                image
+                link
+                title
+            }
         }
     }
 

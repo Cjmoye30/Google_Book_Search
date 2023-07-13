@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
-
 import { useQuery, useMutation } from '@apollo/client';
 import { ADD_USER } from '../utils/mutations';
 
@@ -40,7 +39,6 @@ const SignupForm = () => {
       Auth.login(token);
 
     } catch (err) {
-      console.log("ERROR----------------------------", err)
       console.error(err);
       setShowAlert(true);
     }
